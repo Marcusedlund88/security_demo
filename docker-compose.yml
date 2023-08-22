@@ -12,7 +12,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./customer-micro/sql:/docker-entrypoint-initdb.d
+      - ./user-micro/sql:/docker-entrypoint-initdb.d
     networks:
       - micro-network
     restart: always
@@ -20,15 +20,18 @@ services:
 
   user-micro:
       build:
-        context: ./user-micro
+        context: ./
         dockerfile: Dockerfile
       ports:
         - 8081:8080
       depends_on:
-        - user-db
+        - users-db
       environment:
         - DB_USER=${DB_USER}
         - DB_PASSWORD=${DB_PASSWORD}
       networks:
         - micro-network
       restart: always
+
+networks:
+  micro-network:
