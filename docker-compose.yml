@@ -14,7 +14,7 @@ services:
     volumes:
       - ./user-micro/sql:/docker-entrypoint-initdb.d
     networks:
-      - micro-network
+      - security-network
     restart: always
 
 
@@ -30,8 +30,8 @@ services:
         - DB_USER=${DB_USER}
         - DB_PASSWORD=${DB_PASSWORD}
       networks:
-        - micro-network
+        - security-network
       restart: always
 
 networks:
-  micro-network:
+  security-network:
