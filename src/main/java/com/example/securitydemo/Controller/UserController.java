@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,9 +48,10 @@ public class UserController{
 
     @GetMapping("/login")
     public void login(@RequestParam String username, @RequestParam String password){
-        userRepo.findAll();
-        log.info(username + password);
-        String sql = "SELECT username, password FROM user WHERE username = '"+username+"' AND password = '"+password+"'";
+
+        //isAuth(username, password);
+
+        String sql = "SELECT username, password FROM user WHERE username = '"+username+"' AND password = '"+ password+"'";
         log.info(sql);
         if(isValid(sql)){
             log.info("logged in");
@@ -74,6 +76,19 @@ public class UserController{
         }
         catch(Exception e){
             e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isAuth(String username, String password){
+
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        List<User> users = userRepo.findByUsername(username);
+
+        for(User user : users){
+            if(bCryptPasswordEncoder.matches(password, user.getPassword())){
+                return true;
+            };
         }
         return false;
     }
