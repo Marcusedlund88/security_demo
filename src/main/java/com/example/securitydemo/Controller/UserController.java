@@ -49,7 +49,14 @@ public class UserController{
     @GetMapping("/login")
     public void login(@RequestParam String username, @RequestParam String password){
 
-        //isAuth(username, password);
+        /*if(isAuth(username, password)){
+             log.info("logged in");
+            isLoggedIn = true;
+        }
+        else{
+            isLoggedIn = false;
+            log.info("Wrong credentials");
+        }*/
 
         String sql = "SELECT username, password FROM user WHERE username = '"+username+"' AND password = '"+ password+"'";
         log.info(sql);
