@@ -18,9 +18,9 @@ import java.util.Map;
 @RequestMapping("/users")
 public class UserController{
 
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
     private boolean isLoggedIn = false;
 
@@ -44,15 +44,6 @@ public class UserController{
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void deleteUserById(@PathVariable long id) {
-        userRepo.deleteById(id);
-    }
-
-    @GetMapping("/getById")
-    public void login(@RequestParam String id){
-        String sql = "select username, password from users where id = " + id;
-    }
 
     @GetMapping("/login")
     public void login(@RequestParam String username, @RequestParam String password){
