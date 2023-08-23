@@ -22,6 +22,8 @@ public class UserController{
 
     private DataSource dataSource;
 
+    private boolean isLoggedIn = false;
+
     @Autowired
     public UserController(UserRepo userRepo, DataSource dataSource) {
         this.userRepo = userRepo;
@@ -34,7 +36,12 @@ public class UserController{
     @GetMapping("")
     @ResponseBody
     public List<User> getUsers(){
-        return userRepo.findAll();
+        if(isLoggedIn) {
+            return userRepo.findAll();
+        }
+        else{
+            return null;
+        }
     }
 
     @DeleteMapping("/delete/{id}")
@@ -55,6 +62,11 @@ public class UserController{
         log.info(sql);
         if(isValid(sql)){
             log.info("logged in");
+            isLoggedIn = true;
+        }
+        else{
+            isLoggedIn = false;
+            log.info("Wrong credentials");
         }
 
     }
@@ -64,6 +76,7 @@ public class UserController{
 
             JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
             List<Map<String, Object>> queryResult = jdbcTemplate.queryForList(sql);
+
             if(queryResult.size()>0) {
                 return true;
             }
