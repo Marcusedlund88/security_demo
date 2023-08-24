@@ -2,6 +2,7 @@ package com.example.securitydemo;
 
 import com.example.securitydemo.POJO.User;
 import com.example.securitydemo.Repository.UserRepo;
+import com.example.securitydemo.Service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,11 +19,13 @@ public class SecurityDemoApplication {
 	@Bean
 	public CommandLineRunner users(UserRepo userRepo) {
 		return (args) -> {
-			//String str = "123456";
-			//BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-			//String encryptedPassword = bCryptPasswordEncoder.encode(str);
+
 			userRepo.save(new User("Marcus", "123456"));
-			//userRepo.save(new User("Marcus", encryptedPassword));
+
+			/*
+			UserService userService = new UserService(userRepo);
+			userService.createUser("Marcus", "123456");
+			 */
 		};
 	}
 }
